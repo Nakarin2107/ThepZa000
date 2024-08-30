@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>อนุมัติยืม-คืนอุปกรณ์</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="top.css/borrow.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <style>
+    .navbar {
+      display: flex;
+      justify-content: space-between; 
+      align-items: center;
+      position: relative;
+    }
+    .navbar-nav {
+      margin: 0 auto;
+    }
+    .user-info {
+      position: absolute;
+      right: 20px;
+      display: flex;
+      align-items: center;
+    }
+    .dropdown-toggle::after {
+      display: none;
+    }
+    .btn-user {
+      display: flex;
+      align-items: center;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-user img {
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+    <div class="containerx">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid d-flex align-items-center justify-content-center position-relative">
+                <!-- เมนูการนำทาง -->
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link active" aria-current="page" href="borrow.html">ขอยืมอุปกรณ์</a>
+                        <a class="nav-link" href="return.html">ขอคืนอุปกรณ์</a>
+                        <a class="nav-link" href="approval.html">อนุมัติยืม-คืนอุปกรณ์</a>
+                        <a class="nav-link" href="report.html">รายการอุปกรณ์</a>
+                    </div>
+                </div>
+                <!-- ปุ่ม Dropdown สำหรับผู้ใช้ -->
+                <div class="user-info dropdown">
+                    <button class="btn btn-user dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOHqiIabKJAjUyJiV051Jcob4Gr8j5Agm_7A&s" alt="User Avatar">
+                        <span id="userDisplay"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuButton">
+                        <li><span class="dropdown-item-text"><span id="userDisplayName">นครินทร์</span></span></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><button class="dropdown-item" id="logoutButton">ออกจากระบบ</button></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container">
+        <h1>ขอยืมอุปกรณ์</h1>
+        <form id="borrowForm">
+            <label for="studentId">รหัสนักศึกษา</label>
+            <input type="text" id="studentId" required>
+        
+            <label for="studentName">ชื่อนักศึกษา</label>
+            <input type="text" id="studentName" required>
+        
+            <label for="equipment">อุปกรณ์</label>
+            <select id="equipment" required>
+                <option value="">-- เลือกอุปกรณ์ --</option>
+                <option value="ปลั๊กไฟ">ปลั๊กไฟ</option>
+                <option value="iPad Mini">iPad Mini</option>
+                <option value="โปรเจคเตอร์">โปรเจคเตอร์</option>
+            </select>
+        
+            <label for="borrowDate">วันเวลายืม</label>
+            <input type="datetime-local" id="borrowDate" required>
+        
+            <!-- เปลี่ยนฟิลด์สำหรับชื่อเจ้าหน้าที่เป็น select -->
+            <label for="staffName">เจ้าหน้าที่</label>
+            <select id="staffName" required>
+                <option value="">-- เลือกเจ้าหน้าที่ --</option>
+                <option value="เจ้าหน้าที่ A">เจ้าหน้าที่ A</option>
+                <option value="เจ้าหน้าที่ B">เจ้าหน้าที่ B</option>
+                <option value="เจ้าหน้าที่ C">เจ้าหน้าที่ C</option>
+            </select>
+        
+            <button type="submit">ส่งคำขอยืม</button>
+        </form>
+    </div>
+
+    <script src="main.js/borrow.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        // ฟังก์ชันตรวจสอบและแสดงชื่อผู้ใช้เมื่อโหลดหน้า
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = localStorage.getItem('currentUser');
+
+            if (currentUser) {
+                const user = JSON.parse(currentUser); // แปลงข้อมูล JSON ที่เก็บไว้ใน Local Storage ให้เป็น Object
+                document.getElementById('userDisplay').textContent = user.displayName; // แสดงเฉพาะชื่อผู้ใช้ที่ต้องการ
+                document.getElementById('userDisplayName').textContent = user.displayName;
+            } else {
+                window.location.href = 'login.html'; // หากไม่มีข้อมูลผู้ใช้ให้กลับไปที่หน้า Login
+            }
+        });
+
+        // ฟังก์ชันออกจากระบบ
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            Swal.fire({
+                icon: 'success',
+                title: 'ออกจากระบบสำเร็จ',
+                text: 'คุณจะถูกนำไปที่หน้าเข้าสู่ระบบ',
+                confirmButtonText: 'ตกลง'
+            }).then(() => {
+                localStorage.removeItem('currentUser'); // ลบสถานะผู้ใช้ที่กำลังล็อกอิน
+                window.location.href = 'login.html';
+            });
+        });
+
+    </script>
+</body>
+</html>
