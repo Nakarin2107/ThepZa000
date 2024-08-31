@@ -42,12 +42,12 @@ table {
 th, td {
     padding: 12px 15px;
     text-align: center !important; /* ใช้ !important เพื่อบังคับให้ตรงกลาง */
-    border: 1px solid #ddd;
+    border: 1px solid #000000 !important ;
     vertical-align: middle !important; /* ใช้ !important เพื่อบังคับให้ตรงกลางแนวตั้ง */
 }
 
 th {
-    background-color: #e2e2e2;
+    background-color: #efefef;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -59,7 +59,7 @@ tr:nth-child(even) {
 
 /* สไตล์สำหรับ navbar */
 .navbar.navbar-expand-lg {
-    background-color: #e6edf4;
+    background-color: #f9f9f9;
     margin: 0 0 2rem 0;
     padding: 1rem;
     border-radius: 8px;

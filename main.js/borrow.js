@@ -1,47 +1,10 @@
-// ดึงข้อมูลชื่อผู้ใช้จาก Local Storage และแสดงในส่วนของ userDisplay
-document.addEventListener('DOMContentLoaded', () => {
-    const displayName = localStorage.getItem('displayName') || 'User';
-    document.getElementById('userDisplay').textContent = displayName;
-    document.getElementById('userDisplayName').textContent = displayName;
-});
 
-// ฟังก์ชันออกจากระบบ
-document.getElementById('logoutButton').addEventListener('click', () => {
-    // แสดงการแจ้งเตือนก่อนออกจากระบบ
-    Swal.fire({
-        title: 'คุณแน่ใจหรือไม่?',
-        text: "คุณต้องการออกจากระบบหรือไม่?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'ออกจากระบบ',
-        cancelButtonText: 'ยกเลิก'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // ลบข้อมูลการเข้าสู่ระบบจาก Local Storage
-            localStorage.removeItem('displayName');
-            localStorage.removeItem('username');
-            localStorage.removeItem('password');
 
-            // แสดงการแจ้งเตือนเมื่อออกจากระบบสำเร็จ
-            Swal.fire({
-                icon: 'success',
-                title: 'ออกจากระบบสำเร็จ!',
-                text: 'คุณได้ออกจากระบบแล้ว',
-                confirmButtonText: 'ตกลง'
-            }).then(() => {
-                // นำผู้ใช้กลับไปที่หน้า login
-                window.location.href = 'login.html';
-            });
-        }
-    });
-});
-
+// ฟังก์ชันสำหรับจัดการการส่งฟอร์มยืมอุปกรณ์
 document.getElementById('borrowForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    // Get form values
+    // รับค่าจากฟอร์ม
     const borrowDate = document.getElementById('borrowDate').value;
     const studentId = document.getElementById('studentId').value;
     const studentName = document.getElementById('studentName').value;
@@ -63,13 +26,11 @@ document.getElementById('borrowForm').addEventListener('submit', function(event)
     // ดึงคำขอทั้งหมดจาก Local Storage
     let requests = JSON.parse(localStorage.getItem('requests')) || [];
 
-    // เช็คจำนวนคำขอ
+    // ตรวจสอบจำนวนคำขอ
     const maxRequestsPerPage = 4;
     const totalPages = 100;
 
-    // ค้นหาหน้าปัจจุบัน
-    let currentPage = Math.floor(requests.length / maxRequestsPerPage) + 1;
-
+    // คำนวณหน้าปัจจุบัน
     if (requests.length >= maxRequestsPerPage * totalPages) {
         Swal.fire({
             icon: 'error',
@@ -92,13 +53,12 @@ document.getElementById('borrowForm').addEventListener('submit', function(event)
         title: 'คำขอถูกบันทึกสำเร็จ!',
         text: 'คำขอของคุณถูกบันทึกแล้ว',
         confirmButtonText: 'ตกลง'
-    })
-    .then(() => {
-        // หลังจากกดตกลง ให้ทำการล้างข้อมูลในฟอร์ม
+    }).then(() => {
+        // ล้างข้อมูลในฟอร์ม
         document.getElementById('borrowForm').reset();
     });
-
 });
+
 
 
 
